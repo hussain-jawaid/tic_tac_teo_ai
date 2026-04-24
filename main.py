@@ -5,15 +5,11 @@ class TicTacTeo:
         self.ai_mark = None
         self.total_moves = 0
         # Initialize the game board.
-        self.board = [
-            [0,0,0],
-            [0,0,0],
-            [0,0,0]
-            ]
+        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
         # Take user input to set the marks for both players.
         self.set_marks()
-    
+
     def set_marks(self):
         while True:
             try:
@@ -28,13 +24,18 @@ class TicTacTeo:
         self.ai_mark = "o" if choice == "x" else "x"
 
         self.display_board()
-    
+
     def display_board(self):
         print("\nCurrent Board:")
         for row in self.board:
-            print(" | ".join(self.human_mark if cell == 3 else self.ai_mark if cell == 5 else "-" for cell in row))
+            print(
+                " | ".join(
+                    self.human_mark if cell == 3 else self.ai_mark if cell == 5 else "-"
+                    for cell in row
+                )
+            )
             print("-" * 9)
-    
+
     def player_move(self):
         while True:
             try:
@@ -45,15 +46,20 @@ class TicTacTeo:
                 self.make_move(row, col, self.human_mark)
                 break
             except ValueError as e:
-                print(f"Invalid input: {e} Please try again.")
-    
+                print(f"Invalid input: {e}")
+
     def ai_move(self):
         while True:
-            row, col = self.get_ai_move()
-            if self.board[row][col] == 0:
+            try:
+                row, col = self.get_ai_move()
                 self.make_move(row, col, self.ai_mark)
                 break
+            except ValueError as e:
+                print(f"AI move error: {e} Retrying...")
     
+    def get_ai_move(self):
+        pass
+
     def make_move(self, row, col, mark):
         if self.board[row][col] != 0:
             raise ValueError("Cell is already occupied. Choose another cell.")
@@ -67,6 +73,7 @@ class TicTacTeo:
 
     def check_winner(self):
         pass
+
 
 if __name__ == "__main__":
     game = TicTacTeo()
