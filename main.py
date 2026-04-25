@@ -4,11 +4,14 @@ class TicTacTeo:
         self.human_mark = None
         self.ai_mark = None
         self.total_moves = 0
+        self.humnan_turn = True
         # Initialize the game board.
         self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
         # Take user input to set the marks for both players.
         self.set_marks()
+        # Make the human's first move.
+        self.human_move()
 
     def set_marks(self):
         while True:
@@ -22,9 +25,9 @@ class TicTacTeo:
 
         self.human_mark = choice
         self.ai_mark = "o" if choice == "x" else "x"
+        print(f"You are {self.human_mark} and the AI is {self.ai_mark}")
 
         self.display_board()
-        self.human_move()
 
     def display_board(self):
         print("\nCurrent Board:")
@@ -53,6 +56,7 @@ class TicTacTeo:
         while True:
             try:
                 row, col = self.get_ai_move_v1()
+                print(f"\nAI move: {row}, {col}")
                 self.make_move(row, col, self.ai_mark)
                 break
             except ValueError as e:
@@ -64,7 +68,7 @@ class TicTacTeo:
             for j, col in enumerate(row):
                 if col == 0:
                     return i, j
-             
+
     def make_move(self, row, col, mark):
         if self.board[row][col] != 0:
             raise ValueError("Cell is already occupied. Choose another cell.")
@@ -74,10 +78,52 @@ class TicTacTeo:
 
         # Check for a winner after the move.
         if self.total_moves >= 5:  # Minimum moves required to have a winner.
-            self.check_winner()
+            if self.check_winner():
+                return
+        # Switch turns.
+        self.humnan_turn = not self.humnan_turn
+        self.human_move() if self.humnan_turn else self.ai_move()
 
     def check_winner(self):
-        pass
+        # Check for a winner in the rows.
+        for row in self.board:
+            if sum(row) == 9:
+                print("Human wins!")
+                return True
+            elif sum(row) == 15:
+                print("AI wins!")
+                return True
+        # Check for a winner in the columns.
+        for col in range(3):
+            if sum(self.board[row][col] for row in range(3)) == 9:
+                print("Human wins!")
+                return True
+            elif sum(self.board[row][col] for row in range(3)) == 15:
+                print("AI wins!")
+                return True
+
+        # Check for a winner in the diagonals.
+        # Primary diagonal
+        if self.board[0][0] == self.board[1][1] == self.board[2][2] == 3:
+            print("You wins!")
+            return True
+        elif self.board[0][0] == self.board[1][1] == self.board[2][2] == 5:
+            print("AI wins!")
+            return True
+        # Secondary diagonal
+        if self.board[0][2] == self.board[1][1] == self.board[2][0] == 3:
+            print("You wins!")
+            return True
+        elif self.board[0][2] == self.board[1][1] == self.board[2][0] == 5:
+            print("AI wins!")
+            return True
+
+        # Check for a tie.
+        if self.total_moves == 9:
+            print("Tie!")
+            return True
+
+        return False
 
 
 if __name__ == "__main__":
