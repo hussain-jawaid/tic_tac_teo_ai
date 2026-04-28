@@ -86,18 +86,36 @@ class TicTacTeo:
                     return i, j
     
     def get_ai_move_v2(self):
-        if self.total_moves == 1:
-            return self.get_ai_move_v1()
-        for i, row in enumerate(self.board):
-            if sum(row) == 6:
-                for j, col in enumerate(row):
-                    if col == 0:
-                        return i, j
-        for col in range(3):
-            if sum(self.board[row][col] for row in range(3)) == 6:
-                for row in range(3):
-                    if self.board[row][col] == 0:
-                        return row, col
+        """
+        This method will find the human path in which 
+        its wants to win and block that path.
+        """
+
+        if self.total_moves > 1:
+            # Check for rows path
+            for i, row in enumerate(self.board):
+                if sum(row) == 6:
+                    for j, col in enumerate(row):
+                        if col == 0:
+                            return i, j
+            # Check for columns path
+            for col in range(3):
+                if sum(self.board[row][col] for row in range(3)) == 6:
+                    for row in range(3):
+                        if self.board[row][col] == 0:
+                            return row, col
+            # Check for diognal
+            if sum([self.board[0][0], self.board[1][1], self.board[2][2]]) == 6:
+                for i in range(3):
+                    if self.board[i][i] == 0:
+                        return i, i
+            elif sum([self.board[0][2], self.board[1][1], self.board[2][0]]) == 6:
+                if self.board[0][2] == 0:
+                    return 0, 2
+                elif self.board[1][1] == 0:
+                    return 1, 1
+                elif self.board[2][0] == 0:
+                    return 2, 0
 
         return self.get_ai_move_v1()
     
