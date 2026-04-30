@@ -131,18 +131,30 @@ class TicTacTeo:
         return move
 
     def get_ai_attacking_move(self):
-        # Find the rows with one AI mark and 2 empty cell
+        # Find rows with one AI mark and 2 empty cell
         for i, row in enumerate(self.board):
             if row.count(0) == 2 and row.count(5) == 1:
                 j = row.index(0)
                 return i, j
         
-        # Find the columns with one AI mark and 2 empty cell
+        # Find columns with one AI mark and 2 empty cell
         for col in range(3):
             col_val = [self.board[row][col] for row in range(3)]
             if col_val.count(0) == 2 and col_val.count(5) == 1:
                 row = col_val.index(0)
                 return row, col
+        
+        # Find primary dioganal to win
+        diag = [self.board[i][i] for i in range(3)]
+        if diag.count(0) == 2 and diag.count(5) == 1:
+            idx = diag.index(0)
+            return idx, idx
+
+        # Find secondary diagonal to win
+        sec_diag = [self.board[i][2 - i] for i in range(3)]
+        if sec_diag.count(0) == 2 and sec_diag.count(5) == 1:
+            idx = sec_diag.index(0)
+            return idx, 2 - idx
 
 
     def get_ai_winning_move(self):
