@@ -142,10 +142,20 @@ class TicTacTeo:
         return move
 
     def get_ai_attacking_move(self):
-        # Capture the corner cells first
-        for (i, j) in [(0, 2), (2, 0), (2, 2)]:
-            if self.board[i][j] == self.neutral_number:
-                return i, j
+        
+        # Capture the corner cells first, but skip if both diagonals have two human marks at corners and AI mark in the center.
+        # This prevents the AI from making a mistake when human has a fork opportunity.
+        diag_corners = [self.board[0][0], self.board[2][2]]
+        sec_diag_corners = [self.board[0][2], self.board[2][0]]
+        center = self.board[1][1]
+
+        human_in_diag_corners = diag_corners.count(self.human_number)
+        human_in_sec_diag_corners = sec_diag_corners.count(self.human_number)
+        # Check the fork trap pattern: both diagonals have human corners, center is AI
+        if not ((human_in_diag_corners == 2 or human_in_sec_diag_corners == 2) and center == self.ai_number):
+            for (i, j) in [(0, 2), (2, 0), (2, 2)]:
+                if self.board[i][j] == self.neutral_number:
+                    return i, j
      
         # Find rows with one AI mark and 2 empty cell
         for i, row in enumerate(self.board):
