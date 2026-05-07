@@ -26,9 +26,9 @@ class TicTacTeo:
     def set_difficulty_level(self):
         while True:
             try:
-                level = input("Choose difficulty level (Enter: Easy, Medium, or Hard): ").strip().lower()
-                if level not in {"easy", "medium", "hard"}:
-                    raise ValueError("Invalid difficulty level. Choose 'Easy', 'Medium', or 'Hard'.")
+                level = input("Choose difficulty level (Enter: Easy, Medium, or Impossible): ").strip().lower()
+                if level not in {"easy", "medium", "impossible"}:
+                    raise ValueError("Invalid difficulty level. Choose 'Easy', 'Medium', or 'Impossible'.")
                 break
             except ValueError as e:
                 print(f"Invalid input: {e} Please try again.")
@@ -314,7 +314,6 @@ class TicTacTeo:
             return True
 
         return False
-
 
 if __name__ == "__main__":
     game = TicTacTeo()
